@@ -140,30 +140,37 @@ async function getPrice(){
 //     console.log(data)
 // })
 
-// query("getAsset", ["Adaeze"]).then((data)=>{
+// query("getAsset", ["Nike"]).then((data)=>{
 //     console.log(data.result)
 // })
 
 
-// query("getUser", ["NZ"]).then((data)=>{
-//     console.log(data.result)
-// // })
+query("getUser", ["Nike"]).then((data)=>{
+    console.log(data.result)
+})
 
 // query("get", ["fake_LP"]).then((data)=>{
 //     console.log(data.result)
 // })
+
+
 // query("getAsset", ["fake"]).then((data)=>{
 //   console.log(data.result)
 // })
+
+// query("get", ["sample"]).then((data)=>{
+//   console.log(data.result.USDSH)
+// })
+
 
 // query("getPrice", ["fake","true"]).then((data)=>{
 //   console.log(data.result)
 // })
 
 
-query("get", ["sample100"]).then((data)=>{
-  console.log(data.result)
-})
+// query("get", ["sample100"]).then((data)=>{
+//   console.log(data.result)
+// })
 
 
 

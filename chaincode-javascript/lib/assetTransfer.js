@@ -719,26 +719,26 @@ class AssetTransfer extends Contract {
             }
 
 
-        // else{
+        else{
 
-        //     if(asset_LP[userKey] == undefined){
-        //         return
-        //     } 
+            if(asset_LP[userID] == undefined){
+                return
+            } 
             
-        //     if(asset_LP[userID].Asset < assetAmount || asset_LP[userID].USDSH < usdshAmount){
-        //         return
-        //     }
+            if(asset_LP[userID].Asset < assetAmount || asset_LP[userID].USDSH < usdshAmount){
+                return
+            }
 
-        //     LP.Asset -= assetAmount
-        //     LP.USDSH -= usdshAmount
+            LP.Asset -= assetAmount
+            LP.USDSH -= usdshAmount
 
 
 
-        //     asset_LP[userKey].Asset -= assetAmount
-        //     asset_LP[userKey].USDSH -= usdshAmount
-        //     user.USDSH.balance -= usdshAmount
+            asset_LP[userID].Asset -= assetAmount
+            asset_LP[userID].USDSH -= usdshAmount
+            user.USDSH.balance -= usdshAmount
 
-        // }
+        }
 
         LP.K_Constant = LP.Asset * LP.USDSH
 

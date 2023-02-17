@@ -49,7 +49,7 @@ app.post('/signIn', async (req, res) =>{
 
     let potentialUser = await user.findOne({email:email})
     if(potentialUser == null){
-        consoel.log("did not find user")
+        console.log("did not find user")
         res.send({valid:false})
         return
     }

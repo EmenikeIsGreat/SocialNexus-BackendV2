@@ -53,7 +53,7 @@ async function inject_eject(){
         assetAmount:"1",
         usdshAmount:"10000000000",
         slippage:"10000000000000000",
-        inject:"true",
+        inject:"false",
         userID:"Nike",
         boost:"true",
         orderType:"InjectEject",
@@ -64,7 +64,7 @@ async function inject_eject(){
 
 }
 
-inject_eject()
+//inject_eject()
 
 // let e = "emenike"
 // let b = 'arinzr'
