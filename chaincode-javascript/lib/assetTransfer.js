@@ -711,7 +711,7 @@ class AssetTransfer extends Contract {
             }
 
             else{
-                asset_LP[userID].Asset += assetAmount
+                asset_LP[userID].Asset += 
                 asset_LP[userID].USDSH += usdshAmount
 
             }
@@ -720,23 +720,52 @@ class AssetTransfer extends Contract {
 
 
         else{
-
             if(asset_LP[userID] == undefined){
                 return
             } 
-            
-            if(asset_LP[userID].Asset < assetAmount || asset_LP[userID].USDSH < usdshAmount){
-                return
+
+            if(usdshAmount == null){
+                if(asset_LP[userID].Asset < assetAmount){
+                    return
+                }
+
+                let extraction = (LP.USDSH/LP.Asset) * assetAmount
+
+                LP.Asset -= assetAmount
+                LP.USDSH -= extraction
+
+                
             }
+            
 
-            LP.Asset -= assetAmount
-            LP.USDSH -= usdshAmount
-
+            else{
+                let extraction = (LP.Asset/LP.USDSH) * usdshAmount
+                LP.Asset -= extraction
+                LP.USDSH -= usdshAmount
+            }
 
 
             asset_LP[userID].Asset -= assetAmount
             asset_LP[userID].USDSH -= usdshAmount
-            user.USDSH.balance -= usdshAmount
+            
+            
+            //await ctx.stub.putState("sample", Buffer.from(stringify(user)));
+            
+            user.USDSH.balance += usdshAmount
+
+
+            if(user[asset] == undefined){
+                user[asset] = {
+                    balance:usdshAmount
+                }
+            }
+
+            else{
+                user[asset].balance += usdshAmount
+            }
+
+
+            
 
         }
 
