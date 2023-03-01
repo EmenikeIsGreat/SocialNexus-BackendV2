@@ -1,94 +1,109 @@
+/*
+
+function names must be capatalized or it wont work lol
+
+also struct values must have a capital letter first
+
+
+*/
+
 package chaincode
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"github.com/hyperledger/fabric-contract-api-go/contractapi"
-	"github.com/hyperledger/fabric/common/flogging"
 )
 
-// SmartContract provides functions for managing an Asset
+// function names are case sensitve make them upperCase
 type SmartContract struct {
 	contractapi.Contract
 }
 
-// Asset describes basic details of what makes up a simple agsset
-// Insert struct field in alphabetic order => to achieve determinism accross languages
-// golang keeps the order when marshal to json but doesn't order automatically
-type Asset struct {
-	AppraisedValue int    `json:"AppraisedValue"`
-	Color          string `json:"Color"`
-	ID             string `json:"ID"`
-	Owner          string `json:"Owner"`
-	Size           int    `json:"Size"`
+type User struct {
+	Id     string             `json:"id"`
+	Assets map[string]Balance `json:"assets"`
 }
 
-var logger = flogging.MustGetLogger("asset-transfer")
+type Balance struct {
+	Balance float64 `json:"balance"`
+}
 
-// CreateAsset issues a new asset to the world state with given details.
-func (s *SmartContract) CreateAsset(ctx contractapi.TransactionContextInterface, id string, color string, size int, owner string, appraisedValue int) error {
-	exists, err := s.assetExists(ctx, id)
-	if err != nil {
-		return err
+type Asset struct {
+	Name         string            `json:"name"`
+	Creator      string            `json:"creator"`
+	AmountRaised float64           `json:"amountRaised"`
+	Fees         float64           `json:"fees"`
+	Bidders      map[string]Bidder `json:"bidders"`
+	Reserves     float64           `json:"reserves"`
+}
+
+type Bidder struct {
+	Id     string  `json:"id"`
+	Amount float64 `json:"amount"`
+}
+
+var reserves float64 = 0
+
+func SetReserves(amount float64) {
+	reserves = amount
+}
+
+func GetReserves() float64 {
+	return reserves
+}
+
+func (s *SmartContract) CreateUser(ctx contractapi.TransactionContextInterface, id string) {
+
+	balance := make(map[string]Balance)
+
+	balance["USDSH"] = Balance{
+		Balance: 0,
 	}
-	if exists {
-		return fmt.Errorf("the asset %s already exists", id)
+
+	user := User{
+		Id:     id,
+		Assets: balance,
 	}
+	userJSON, _ := json.Marshal(user)
+
+	ctx.GetStub().PutState(id, userJSON)
+}
+
+func (s *SmartContract) GetUser(ctx contractapi.TransactionContextInterface, id string) User {
+	userJSON, _ := ctx.GetStub().GetState(id)
+
+	var user User
+	json.Unmarshal(userJSON, &user)
+
+	return user
+
+}
+
+func (s *SmartContract) CreateAsset(ctx contractapi.TransactionContextInterface, name string, creator string) {
+	bidders := make(map[string]Bidder)
 
 	asset := Asset{
-		ID:             id,
-		Color:          color,
-		Size:           size,
-		Owner:          owner,
-		AppraisedValue: appraisedValue,
-	}
-	assetJSON, err := json.Marshal(asset)
-	if err != nil {
-		return err
+		Name:         name,
+		Creator:      creator,
+		AmountRaised: 0,
+		Fees:         0,
+		Reserves:     reserves,
+		Bidders:      bidders,
 	}
 
-	logger.Infof("Asset create: %+v", string(assetJSON))
+	assetJSON, _ := json.Marshal(asset)
 
-	ctx.GetStub().SetEvent("AssetCreated", assetJSON)
+	ctx.GetStub().PutState(name, assetJSON)
 
-	return ctx.GetStub().PutState(id, assetJSON)
 }
 
-// GetAllAssets returns all assets found in world state
-func (s *SmartContract) GetAllAssets(ctx contractapi.TransactionContextInterface) (int, error) {
-	// range query with empty string for startKey and endKey does an
-	// open-ended query of all assets in the chaincode namespace.
-	resultsIterator, err := ctx.GetStub().GetStateByRange("", "")
-	if err != nil {
-		return 10, nil
-	}
-	defer resultsIterator.Close()
+func (s *SmartContract) GetAsset(ctx contractapi.TransactionContextInterface, name string) Asset {
+	assetJSON, _ := ctx.GetStub().GetState(name)
 
-	var assets []Asset
-	for resultsIterator.HasNext() {
-		queryResponse, err := resultsIterator.Next()
-		if err != nil {
-			return 10, nil
-		}
+	var asset Asset
+	json.Unmarshal(assetJSON, &asset)
 
-		var asset Asset
-		err = json.Unmarshal(queryResponse.Value, &asset)
-		if err != nil {
-			return 11, nil
-		}
-		assets = append(assets, asset)
-	}
+	return asset
 
-	return 11, nil
-}
-
-// AssetExists returns true when asset with given ID exists in world state
-func (s *SmartContract) assetExists(ctx contractapi.TransactionContextInterface, id string) (bool, error) {
-	assetJSON, err := ctx.GetStub().GetState(id)
-	if err != nil {
-		return false, fmt.Errorf("failed to read from world state: %v", err)
-	}
-
-	return assetJSON != nil, nil
 }

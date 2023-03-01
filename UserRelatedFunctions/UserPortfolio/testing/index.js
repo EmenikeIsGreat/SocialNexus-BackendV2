@@ -145,7 +145,7 @@ async function getPrice(){
 // })
 
 
-query("getUser", ["Nike"]).then((data)=>{
+query("getAsset", ["sample"]).then((data)=>{
     console.log(data.result)
 })
 

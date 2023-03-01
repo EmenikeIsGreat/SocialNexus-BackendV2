@@ -19,6 +19,7 @@ error codes
 
 */
 
+
 class AssetTransfer extends Contract {
 
     orderFee = 0;

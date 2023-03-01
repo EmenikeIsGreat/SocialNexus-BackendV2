@@ -59,9 +59,9 @@ module.exports = async function query(func, args){
         return res.data
     }
     catch(error){
-        console.log("failed")
-        console.log(error.response.data)
-        return error
+        //console.log("failed")
+        //console.log(error.response.data)
+        return error.response.data
     }
 }
 

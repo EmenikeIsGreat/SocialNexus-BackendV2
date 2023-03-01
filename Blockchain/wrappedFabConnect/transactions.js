@@ -59,14 +59,14 @@ module.exports = async function transaction(func, args){
               }   
         }
         );
-        console.log("success")
+        //console.log("success")
         //console.log(res.data)
         return res.data
     }
     catch(error){
-        console.log("failed")
-        console.log(error.response.data)
-        return error
+        //console.log("failed")
+        //console.log(error.response.data)
+        return error.response.data
     }
 }
 
