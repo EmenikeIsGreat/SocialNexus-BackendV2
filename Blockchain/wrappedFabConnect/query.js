@@ -6,11 +6,8 @@ const path = require('path');
 const coolPath = path.join(__dirname, '../../.env')
 require("dotenv").config({path:coolPath})
 
-let baseURL = process.env.KALEIDO_PEER_BASE_URL
-let HLF_Signer = process.env.HLF_SIGNER
-let flyChannel = process.env.HLF_FLY_CHANNEL
-let auth = process.env.AUTHORIZATION
-let contract = process.env.HLF_CONTRACT
+
+
 
 /*
 sample curl reequest
@@ -32,7 +29,14 @@ curl -X 'POST' \
   "strongread": true
 }'
 */
-module.exports = async function query(func, args){
+module.exports = async function query(func, args,testing){
+
+  let baseURL = testing ? process.env.KALEIDO_PEER_BASE_URL_Testing:process.env.KALEIDO_PEER_BASE_URL_Testing
+  let HLF_Signer = testing ? process.env.HLF_SIGNER_Testing:process.env.HLF_SIGNER
+  let flyChannel = testing ? process.env.HLF_FLY_CHANNEL_Testing:process.env.HLF_FLY_CHANNEL
+  let auth = testing ? process.env.AUTHORIZATION_Testing:process.env.AUTHORIZATION
+  let contract = testing ? process.env.HLF_CONTRACT:process.env.HLF_CONTRACT
+
     try{
         
         const res = await axios.post(baseURL + 'query',

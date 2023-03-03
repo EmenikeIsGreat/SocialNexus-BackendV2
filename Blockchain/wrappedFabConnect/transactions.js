@@ -7,11 +7,9 @@ const path = require('path');
 const coolPath = path.join(__dirname, '../../.env')
 require("dotenv").config({path:coolPath})
 
-let baseURL = process.env.KALEIDO_PEER_BASE_URL
-let HLF_Signer = process.env.HLF_SIGNER
-let flyChannel = process.env.HLF_FLY_CHANNEL
-let auth = process.env.AUTHORIZATION
-let contract = process.env.HLF_CONTRACT
+
+
+
 
 /*
 sample curl reequest
@@ -36,8 +34,16 @@ curl -X 'POST' \
 */
 
 
-module.exports = async function transaction(func, args){
+module.exports = async function transaction(func, args,testing){
+    let baseURL = testing ? process.env.KALEIDO_PEER_BASE_URL_Testing:process.env.KALEIDO_PEER_BASE_URL_Testing
+    let HLF_Signer = testing ? process.env.HLF_SIGNER_Testing:process.env.HLF_SIGNER
+    let flyChannel = testing ? process.env.HLF_FLY_CHANNEL_Testing:process.env.HLF_FLY_CHANNEL
+    let auth = testing ? process.env.AUTHORIZATION_Testing:process.env.AUTHORIZATION
+    let contract = testing ? process.env.HLF_CONTRACT:process.env.HLF_CONTRACT
+
     let url = baseURL + 'transactions?fly-sync=' + true
+
+
     try{
         
         const res = await axios.post(url,
@@ -66,7 +72,7 @@ module.exports = async function transaction(func, args){
     catch(error){
         //console.log("failed")
         //console.log(error.response.data)
-        return error.response.data
+        return error
     }
 }
 
@@ -122,7 +128,8 @@ when invoking a function that requires json data you should stringify it first a
 // }
 
 
-//transaction('createUser',["63b79170871e180d114f80c9"])
+//transaction('CreateUser',["63b79170871e180d114f80c9"],false)
+
 //transaction('deposit',["EmenikeTXFROMID","Emenike","1000000","true"])
 //transaction('withdraw',["EmenikeTXFROMID","Emenike23","105000",'true'])
 

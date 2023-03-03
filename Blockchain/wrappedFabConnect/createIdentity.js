@@ -5,10 +5,7 @@ const path = require('path');
 const coolPath = path.join(__dirname, '../../.env')
 require("dotenv").config({path:coolPath})
 
-let baseURL = process.env.KALEIDO_PEER_BASE_URL
-let HLF_Signer = process.env.HLF_SIGNER
-let flyChannel = process.env.HLF_FLY_CHANNEL
-let auth = process.env.AUTHORIZATION
+
 
 /*
 curl request to register identity
@@ -26,7 +23,11 @@ curl -X 'POST' \
 }'
 */
 
-async function registerIdentity(identity){
+async function registerIdentity(identity,testing){
+  let baseURL = testing ? process.env.KALEIDO_PEER_BASE_URL_Testing:process.env.KALEIDO_PEER_BASE_URL_Testing
+  let HLF_Signer = testing ? process.env.HLF_SIGNER_Testing:process.env.HLF_SIGNER
+  let flyChannel = testing ? process.env.HLF_FLY_CHANNEL_Testing:process.env.HLF_FLY_CHANNEL
+  let auth = testing ? process.env.AUTHORIZATION_Testing:process.env.AUTHORIZATION
     try{
         const res = await axios.post(baseURL + 'identities', {
             "name": identity,
@@ -77,7 +78,12 @@ curl -X 'POST' \
 
 
 
-async function enrollIdentity(name, secret){ 
+async function enrollIdentity(name, secret,testing){ 
+  let baseURL = testing ? process.env.KALEIDO_PEER_BASE_URL_Testing:process.env.KALEIDO_PEER_BASE_URL_Testing
+  let HLF_Signer = testing ? process.env.HLF_SIGNER_Testing:process.env.HLF_SIGNER
+  let flyChannel = testing ? process.env.HLF_FLY_CHANNEL_Testing:process.env.HLF_FLY_CHANNEL
+  let auth = testing ? process.env.AUTHORIZATION_Testing:process.env.AUTHORIZATION
+  let contract = testing ? process.env.HLF_CONTRACT:process.env.HLF_CONTRACT
     try{
         let url = baseURL + 'identities' + '/' + name + '/enroll'
         const res = await axios.post(url, {
@@ -107,7 +113,12 @@ async function enrollIdentity(name, secret){
 
 //enrollIdentity("Emenike37", "CUtUmtbtJaIG")
 
-async function registerAndEnrollIdentity(name){
+async function registerAndEnrollIdentity(name,testing){
+  let baseURL = testing ? process.env.KALEIDO_PEER_BASE_URL_Testing:process.env.KALEIDO_PEER_BASE_URL_Testing
+  let HLF_Signer = testing ? process.env.HLF_SIGNER_Testing:process.env.HLF_SIGNER
+  let flyChannel = testing ? process.env.HLF_FLY_CHANNEL_Testing:process.env.HLF_FLY_CHANNEL
+  let auth = testing ? process.env.AUTHORIZATION_Testing:process.env.AUTHORIZATION
+  let contract = testing ? process.env.HLF_CONTRACT:process.env.HLF_CONTRACT
 
     try{
         let identityJson = await registerIdentity(name);

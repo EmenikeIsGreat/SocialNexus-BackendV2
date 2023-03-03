@@ -873,7 +873,7 @@
     "mocha": "^8.4.0"
   },
   "scripts": {
-    "test": "jest --coverage"
+    "test": "jest --coverage --runInBand"
   },
   "repository": {
     "type": "git",

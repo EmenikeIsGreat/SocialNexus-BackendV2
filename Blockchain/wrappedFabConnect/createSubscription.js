@@ -5,11 +5,6 @@ const path = require('path');
 const coolPath = path.join(__dirname, '../../.env')
 require("dotenv").config({path:coolPath})
 
-let baseURL = process.env.KALEIDO_PEER_BASE_URL
-let HLF_Signer = process.env.HLF_SIGNER
-let flyChannel = process.env.HLF_FLY_CHANNEL
-let auth = process.env.AUTHORIZATION
-
 
 /*
 sample curl reequest
@@ -32,8 +27,13 @@ curl -X 'POST' \
 */
 
 
-async function createSubscription(name, stream, startingBlock){
-    try{
+async function createSubscription(name, stream, startingBlock,testing){
+  let baseURL = testing ? process.env.KALEIDO_PEER_BASE_URL_Testing:process.env.KALEIDO_PEER_BASE_URL_Testing
+  let HLF_Signer = testing ? process.env.HLF_SIGNER_Testing:process.env.HLF_SIGNER
+  let flyChannel = testing ? process.env.HLF_FLY_CHANNEL_Testing:process.env.HLF_FLY_CHANNEL
+  let auth = testing ? process.env.AUTHORIZATION_Testing:process.env.AUTHORIZATION
+    
+  try{
         let url = baseURL + 'subscriptions'
         const res = await axios.post(url,
             {
