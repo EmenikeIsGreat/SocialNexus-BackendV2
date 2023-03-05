@@ -39,7 +39,7 @@ module.exports = async function transaction(func, args,testing){
     let HLF_Signer = testing ? process.env.HLF_SIGNER_Testing:process.env.HLF_SIGNER
     let flyChannel = testing ? process.env.HLF_FLY_CHANNEL_Testing:process.env.HLF_FLY_CHANNEL
     let auth = testing ? process.env.AUTHORIZATION_Testing:process.env.AUTHORIZATION
-    let contract = testing ? process.env.HLF_CONTRACT:process.env.HLF_CONTRACT
+    let contract = testing ? process.env.HLF_CONTRACT_Testing:process.env.HLF_CONTRACT
 
     let url = baseURL + 'transactions?fly-sync=' + true
 
@@ -119,7 +119,7 @@ when invoking a function that requires json data you should stringify it first a
 
 
 
-// transaction('createUser',["SocialNexusExternalTxFees"])
+// transaction('createUser',["YOYO"])
 // transaction('createUser',["SocialNexus"])
 //transaction('createUser',["Emenike"])
 

@@ -6,10 +6,10 @@ const stringify  = require('json-stringify-deterministic');
 test("testing",
 async()=>{
     //let val = (await tx("Deposit",["sample","Emenike","10"]))
-    await tx('createUser',["Emenike"])
-    await tx('Deposit',["sample","Emenike","1000"])
+    await tx('createUser',["Emenike"],true)
+    await tx('Deposit',["sample","Emenike","1000"],true)
     
-    res3 = (await query('GetBalance',["Emenike"])).result
+    res3 = (await query('GetBalance',["Emenike"],true)).result
     expect(
         res3
     ).toBe(
@@ -21,18 +21,18 @@ async()=>{
 test("testing withdraw without fees",
 async()=>{
 
-    await tx('SetTransferFee',["0"]) 
+    await tx('SetTransferFee',["0"],true) 
 
 
-    await tx('createUser',["Emenike"])
-    await tx('Deposit',["sample","Emenike","100"])
+    await tx('createUser',["Emenike"],true)
+    await tx('Deposit',["sample","Emenike","100"],true)
     
     // let balance = (await query('GetBalance',["Emenike"])).result
     // console.log(balance)
 
-    await tx('Withdraw',["sample","Emenike","10"])
+    await tx('Withdraw',["sample","Emenike","10"],true)
     
-    balance = (await query('GetBalance',["Emenike"])).result
+    balance = (await query('GetBalance',["Emenike"],true)).result
 //     console.log(balance)
     expect(
         balance
@@ -43,20 +43,20 @@ async()=>{
 
 test("withdraw with fees, SocialNexus revnue, revenue collect",
 async()=>{
-    await tx('SetTransferFee',["0.03"])
-    await tx('createUser',["Emenike"])
-    let val = (await tx("Deposit",["sample","Emenike","10000"]))
-    let res = await tx('Withdraw',["sample","Emenike","100"])
+    await tx('SetTransferFee',["0.03"],true)
+    await tx('createUser',["Emenike"],true)
+    let val = (await tx("Deposit",["sample","Emenike","10000"],true))
+    let res = await tx('Withdraw',["sample","Emenike","100"],true)
 
-    await tx('createUser',["Arinze"])
-    let val2 = (await tx("Deposit",["sample","Arinze","10000"]))
-    let res3 = await tx('Withdraw',["sample","Arinze","100"])
+    await tx('createUser',["Arinze"],true)
+    let val2 = (await tx("Deposit",["sample","Arinze","10000"],true))
+    let res3 = await tx('Withdraw',["sample","Arinze","100"],true)
     
-    let balance = (await query('GetBalance',["Emenike"])).result
-    let revenue = (await query('GetRevenue',[])).result
-    await tx('CollectRevenue',[])
-    let revenue2 = (await query('GetRevenue',[])).result
-    
+    let balance = (await query('GetBalance',["Emenike"],true)).result
+    let revenue = (await query('GetRevenue',[],true)).result
+    await tx('CollectRevenue',[],true)
+    let revenue2 = (await query('GetRevenue',[],true)).result
+
     expect(
         [balance,revenue,revenue2]
     ).toEqual(
@@ -68,12 +68,12 @@ async()=>{
 
 test("testing withdraw with not enough balance",
 async()=>{
-    await tx('SetTransferFee',["0.01"])
-    await tx('createUser',["Emenike"])
-    let val = (await tx("Deposit",["sample","Emenike","10000"]))
-    let res = await tx('Withdraw',["sample","Emenike","1000000000"])
+    await tx('SetTransferFee',["0.01"],true)
+    await tx('createUser',["Emenike"],true)
+    let val = (await tx("Deposit",["sample","Emenike","10000"],true))
+    let res = await tx('Withdraw',["sample","Emenike","1000000000"],true)
     
-    let balance = (await query('GetBalance',["Emenike"])).result
+    let balance = (await query('GetBalance',["Emenike"],true)).result
     expect(
         balance
     ).toBe(
@@ -83,10 +83,10 @@ async()=>{
 
 test("testing if Deposit Transaction is saved",
 async()=>{
-    await tx('createUser',["Emenike"])
-    let res1 = await tx("Deposit",["sample1","Emenike","10000"])
+    await tx('createUser',["Emenike"],true)
+    let res1 = await tx("Deposit",["sample1","Emenike","10000"],true)
     
-    let tx1 = (await query('GetTxID',["sample1"])).result
+    let tx1 = (await query('GetTxID',["sample1"],true)).result
 
     let tx1JSON = stringify(tx1)
     let comparison1 = {
@@ -107,11 +107,11 @@ async()=>{
 
 test("testing if Deposit Transaction is saved",
 async()=>{
-    await tx('createUser',["Emenike"])
+    await tx('createUser',["Emenike"],true)
 
-    let res2 = await tx('Withdraw',["sample2","Emenike","1000000000"])
+    let res2 = await tx('Withdraw',["sample2","Emenike","1000000000"],true)
     
-    let tx2 = (await query('GetTxID',["sample2"])).result
+    let tx2 = (await query('GetTxID',["sample2"],true)).result
 
     let t2JSON = stringify(tx2)
 

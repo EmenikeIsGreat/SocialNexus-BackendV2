@@ -5,8 +5,8 @@ const stringify  = require('json-stringify-deterministic');
 
 
 test('testing createUser and getUser and verifying name',async ()=>{
-    tx('createUser',["Emenike"])
-    const res = (await query('getUser',["Emenike"])).result.id
+    tx('CreateUser',["Emenike"],true)
+    const res = (await query('getUser',["Emenike"],true)).result.id
     expect(
         res
     ).toBe("Emenike")
@@ -14,8 +14,8 @@ test('testing createUser and getUser and verifying name',async ()=>{
 
 // testing if balance is zero after creation
 test('testing createUser and getUser and verifying balance',async ()=>{
-    tx('createUser',["Emenike"])
-    const res = (await query('getUser',["Emenike"])).result.assets.USDSH.balance
+    tx('CreateUser',["Emenike"],true)
+    const res = (await query('GetBalance',["Emenike"],true)).result
     expect(
         res
     ).toBe(0)

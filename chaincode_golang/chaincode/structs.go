@@ -7,6 +7,7 @@ type User struct {
 
 type Balance struct {
 	Balance float64 `json:"balance"`
+	Bid     float64 `json:"bid"`
 }
 
 type Asset struct {

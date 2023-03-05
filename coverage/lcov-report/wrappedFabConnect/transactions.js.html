@@ -30,9 +30,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>5/10</span>
             </div>
         
             
@@ -203,7 +203,14 @@
 <a name='L138'></a><a href='#L138'>138</a>
 <a name='L139'></a><a href='#L139'>139</a>
 <a name='L140'></a><a href='#L140'>140</a>
-<a name='L141'></a><a href='#L141'>141</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
+<a name='L141'></a><a href='#L141'>141</a>
+<a name='L142'></a><a href='#L142'>142</a>
+<a name='L143'></a><a href='#L143'>143</a>
+<a name='L144'></a><a href='#L144'>144</a>
+<a name='L145'></a><a href='#L145'>145</a>
+<a name='L146'></a><a href='#L146'>146</a>
+<a name='L147'></a><a href='#L147'>147</a>
+<a name='L148'></a><a href='#L148'>148</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -212,11 +219,9 @@
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -242,20 +247,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">26x</span>
-<span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-yes">36x</span>
+<span class="cline-any cline-yes">36x</span>
+<span class="cline-any cline-yes">36x</span>
+<span class="cline-any cline-yes">36x</span>
+<span class="cline-any cline-yes">36x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">26x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">36x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">36x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">36x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -266,7 +269,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">24x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">35x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -343,6 +356,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const axios = require('axios') 
 const stringify  = require('json-stringify-deterministic');
 const path = require('path');
@@ -352,11 +366,9 @@ const path = require('path');
 const coolPath = path.join(__dirname, '../../.env')
 require("dotenv").config({path:coolPath})
 &nbsp;
-let baseURL = process.env.KALEIDO_PEER_BASE_URL
-let HLF_Signer = process.env.HLF_SIGNER
-let flyChannel = process.env.HLF_FLY_CHANNEL
-let auth = process.env.AUTHORIZATION
-let contract = process.env.HLF_CONTRACT
+&nbsp;
+&nbsp;
+&nbsp;
 &nbsp;
 /*
 sample curl reequest
@@ -381,8 +393,16 @@ curl -X 'POST' \
 */
 &nbsp;
 &nbsp;
-module.exports = async function transaction(func, args){
+module.exports = async function transaction(func, args,testing){
+    let baseURL = testing ? process.env.KALEIDO_PEER_BASE_URL_Testing:<span class="branch-1 cbranch-no" title="branch not covered" >process.env.KALEIDO_PEER_BASE_URL_Testing</span>
+    let HLF_Signer = testing ? process.env.HLF_SIGNER_Testing:<span class="branch-1 cbranch-no" title="branch not covered" >process.env.HLF_SIGNER</span>
+    let flyChannel = testing ? process.env.HLF_FLY_CHANNEL_Testing:<span class="branch-1 cbranch-no" title="branch not covered" >process.env.HLF_FLY_CHANNEL</span>
+    let auth = testing ? process.env.AUTHORIZATION_Testing:<span class="branch-1 cbranch-no" title="branch not covered" >process.env.AUTHORIZATION</span>
+    let contract = testing ? process.env.HLF_CONTRACT_Testing:<span class="branch-1 cbranch-no" title="branch not covered" >process.env.HLF_CONTRACT</span>
+&nbsp;
     let url = baseURL + 'transactions?fly-sync=' + true
+&nbsp;
+&nbsp;
     try{
         
         const res = await axios.post(url,
@@ -406,12 +426,12 @@ module.exports = async function transaction(func, args){
         );
         //console.log("success")
         //console.log(res.data)
-        return true
+        return res.data
     }
     catch(error){
         //console.log("failed")
         //console.log(error.response.data)
-<span class="cstat-no" title="statement not covered" >        return error.response.data</span>
+<span class="cstat-no" title="statement not covered" >        return error</span>
     }
 }
 &nbsp;
@@ -458,7 +478,7 @@ when invoking a function that requires json data you should stringify it first a
 &nbsp;
 &nbsp;
 &nbsp;
-// transaction('createUser',["SocialNexusExternalTxFees"])
+// transaction('createUser',["YOYO"])
 // transaction('createUser',["SocialNexus"])
 //transaction('createUser',["Emenike"])
 &nbsp;
@@ -467,7 +487,8 @@ when invoking a function that requires json data you should stringify it first a
 // }
 &nbsp;
 &nbsp;
-//transaction('createUser',["63b79170871e180d114f80c9"])
+//transaction('CreateUser',["63b79170871e180d114f80c9"],false)
+&nbsp;
 //transaction('deposit',["EmenikeTXFROMID","Emenike","1000000","true"])
 //transaction('withdraw',["EmenikeTXFROMID","Emenike23","105000",'true'])
 &nbsp;
@@ -490,7 +511,7 @@ when invoking a function that requires json data you should stringify it first a
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-03-03T01:20:07.130Z
+                at 2023-03-05T18:02:48.605Z
             </div>
         <script src="../prettify.js"></script>
         <script>

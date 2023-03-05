@@ -28,7 +28,7 @@ curl -X 'POST' \
 
 
 async function deleteEventStream(stream,testing){
-    let baseURL = testing ? process.env.KALEIDO_PEER_BASE_URL_Testing:process.env.KALEIDO_PEER_BASE_URL_Testing
+    let baseURL = testing ? process.env.KALEIDO_PEER_BASE_URL_Testing:process.env.KALEIDO_PEER_BASE_URL
     let HLF_Signer = testing ? process.env.HLF_SIGNER_Testing:process.env.HLF_SIGNER
     let flyChannel = testing ? process.env.HLF_FLY_CHANNEL_Testing:process.env.HLF_FLY_CHANNEL
     let auth = testing ? process.env.AUTHORIZATION_Testing:process.env.AUTHORIZATION

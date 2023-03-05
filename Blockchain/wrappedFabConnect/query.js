@@ -31,11 +31,11 @@ curl -X 'POST' \
 */
 module.exports = async function query(func, args,testing){
 
-  let baseURL = testing ? process.env.KALEIDO_PEER_BASE_URL_Testing:process.env.KALEIDO_PEER_BASE_URL_Testing
+  let baseURL = testing ? process.env.KALEIDO_PEER_BASE_URL_Testing:process.env.KALEIDO_PEER_BASE_URL
   let HLF_Signer = testing ? process.env.HLF_SIGNER_Testing:process.env.HLF_SIGNER
   let flyChannel = testing ? process.env.HLF_FLY_CHANNEL_Testing:process.env.HLF_FLY_CHANNEL
   let auth = testing ? process.env.AUTHORIZATION_Testing:process.env.AUTHORIZATION
-  let contract = testing ? process.env.HLF_CONTRACT:process.env.HLF_CONTRACT
+  let contract = testing ? process.env.HLF_CONTRACT_Testing:process.env.HLF_CONTRACT
 
     try{
         
@@ -79,7 +79,7 @@ module.exports = async function query(func, args,testing){
 // }
 
 
-// query( "get", ["Emenicjefjvkefvke23"]).then((data)=>{
+// query( "get", ["SocialNexusExternalTxFees"]).then((data)=>{
 //   console.log(data)
 // })
 //query("Emenike", "test", "contract", "getUser", ["testCoin"])

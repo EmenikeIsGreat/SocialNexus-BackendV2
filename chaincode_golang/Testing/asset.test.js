@@ -14,11 +14,12 @@ test('createAsset getAsset verfying name',async ()=>{
 
 test('userBid',async ()=>{
     await tx('CreateAsset',["Nike","Emenike"],true)
+    
     await tx('createUser',["Emenike"],true)
-    await tx("Deposit",["sample1","Emenike","10000"],true)
+    await tx('createUser',["Arinze"],true)
 
-    await tx('createUser',["Arinze"])
-    await tx("Deposit",["sample1","Arinze","10000"],true)
+    await tx("Deposit",["sample1","Emenike","1000"],true)    
+    await tx("Deposit",["sample1","Arinze","1000"],true)
     
     let order = [{
         orderID:"order1",
@@ -34,16 +35,39 @@ test('userBid',async ()=>{
     }]
 
     await tx('UserBid',["Nike",stringify(order)],true)
-    // await tx('CheckIfParsingWork',[stringify(order)])
 
-    const res1 = (await query('GetUser',["Emenike"],true)).result
-    const res2 = (await query('GetAsset',["Nike"],true)).result
-    const res3 = (await query('GetTxID',["order1"],true)).result
 
-    console.log(res1)
-    console.log(res2)
-    console.log(res3)
+
+    const asset = (await query('GetAsset',["Nike"],true)).result
+    const amountRaised = asset.amountRaised
+
+    const tx1 = (await query('GetTxID',["order1"],true)).result
+    const tx2 = (await query('GetTxID',["order2"],true)).result
+
+    const balance1 = (await query('GetBalance',["Emenike"],true)).result
+    const balance2 = (await query('GetBalance',["Arinze"],true)).result
+    
+
+    const res = {
+        balance1:balance1,
+        balance2:balance2,
+        amountRaised: amountRaised,
+        tx1:tx1.valid,
+        tx2:tx2.valid,
+        biddersAmount1:asset.bidders.Arinze.amount,
+        biddersAmount2:asset.bidders.Emenike.amount
+
+    }
+    console.log(res)
     expect(
-        res3
-    ).toBe("sample")
+        res
+    ).toEqual({
+        balance1:900,
+        balance2:900,
+        amountRaised:200,
+        tx1:true,
+        tx2:true,
+        biddersAmount1:100,
+        biddersAmount2:100
+    })
 })

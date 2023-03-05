@@ -85,7 +85,7 @@ async function createUsers(amount){
 }
 
 
-createUsers(10)
+//createUsers(10)
   
 
 // create one asset

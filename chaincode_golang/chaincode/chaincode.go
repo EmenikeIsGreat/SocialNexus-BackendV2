@@ -20,64 +20,6 @@ type SmartContract struct {
 	contractapi.Contract
 }
 
-// type User struct {
-// 	Id     string             `json:"id"`
-// 	Assets map[string]Balance `json:"assets"`
-// }
-
-// type Balance struct {
-// 	Balance float64 `json:"balance"`
-// }
-
-// type Asset struct {
-// 	Name         string            `json:"name"`
-// 	Creator      string            `json:"creator"`
-// 	AmountRaised float64           `json:"amountRaised"`
-// 	Fees         float64           `json:"fees"`
-// 	Bidders      map[string]Bidder `json:"bidders"`
-// 	Reserves     float64           `json:"reserves"`
-// }
-
-// type Bidder struct {
-// 	Id     string  `json:"id"`
-// 	Amount float64 `json:"amount"`
-// }
-
-// type LiquidityProviders struct {
-// 	Name      string               `json:"name"`
-// 	Providers map[string]LPBalance `json:"providers"`
-// }
-
-// type LPBalance struct {
-// 	USDSH float64 `json:"usdsh"`
-// 	Asset float64 `json:"asset"`
-// }
-
-// type Fees struct {
-// 	OrderFee    float64 `json:"orderFee"`
-// 	TransferFee float64 `json:"transferFee"`
-// 	CreatorFee  float64 `json:"creatorFee"`
-// 	LPFees      float64 `json:"LPFees"`
-// }
-
-// /*
-// 0 is success
-// 1 is insufficient balance
-// 2 not enough of asset
-// 3 not within slippage
-// */
-// type Tx struct {
-// 	Valid bool `json:"valid"`
-// 	Code  int  `json:"code"`
-// }
-
-// type Order struct {
-// 	OrderId string  `json:"orderID"`
-// 	UserID  string  `json:"userID"`
-// 	AssetID string  `json:"assetID"`
-// 	Usdsn   float64 `json:"usdsn"`
-// }
-
 var orderFee float64 = 0
 var transferFee float64 = 0
 var creatorFee float64 = 0
@@ -138,7 +80,7 @@ func (s *SmartContract) CreateUser(ctx contractapi.TransactionContextInterface, 
 
 	balance := make(map[string]Balance)
 
-	balance["USDSH"] = Balance{
+	balance["USDSN"] = Balance{
 		Balance: 0,
 	}
 
@@ -196,10 +138,10 @@ func (*SmartContract) Deposit(ctx contractapi.TransactionContextInterface, txID 
 	var user User
 	json.Unmarshal(userJSONBytes, &user)
 
-	value, _ := user.Assets["USDSH"]
+	value, _ := user.Assets["USDSN"]
 
 	value.Balance += amount
-	user.Assets["USDSH"] = value
+	user.Assets["USDSN"] = value
 
 	res, _ := json.Marshal(user)
 
@@ -234,10 +176,10 @@ func (*SmartContract) Withdraw(ctx contractapi.TransactionContextInterface, txID
 		ctx.GetStub().PutState(txID, res)
 		return
 	}
-	balance, _ := user.Assets["USDSH"]
+	balance, _ := user.Assets["USDSN"]
 	balance.Balance -= amount + amount*(transferFee)
 	revenue += amount * (transferFee)
-	user.Assets["USDSH"] = balance
+	user.Assets["USDSN"] = balance
 
 	res, _ := json.Marshal(user)
 
@@ -251,7 +193,7 @@ func (*SmartContract) Withdraw(ctx contractapi.TransactionContextInterface, txID
 }
 
 func HasBalance(user User, amount float64) bool {
-	balance, _ := user.Assets["USDSH"]
+	balance, _ := user.Assets["USDSN"]
 
 	if balance.Balance >= amount {
 		return true
@@ -267,7 +209,7 @@ func (*SmartContract) GetBalance(ctx contractapi.TransactionContextInterface, id
 
 	json.Unmarshal(userByteData, &user)
 
-	value, _ := user.Assets["USDSH"]
+	value, _ := user.Assets["USDSN"]
 
 	return value.Balance
 
@@ -309,34 +251,42 @@ func (*SmartContract) UserBid(ctx contractapi.TransactionContextInterface, asset
 	for i := 0; i < len(orders); i++ {
 
 		userID := orders[i].UserID
-		assetID := orders[i].AssetID
 		usdsn := orders[i].Usdsn
 		var txID = orders[i].OrderId
 
 		data, _ := ctx.GetStub().GetState(userID)
 		var user User
 
-		amount := user.Assets["USDSN"]
-
 		json.Unmarshal(data, &user)
+		amount := user.Assets["USDSN"]
+		assetBalance := user.Assets[assetID]
 
 		fee := usdsn * orderFee
 		totalCost := fee + usdsn
-		reserves += fee
 
 		if !HasBalance(user, totalCost) {
 			tx := Tx{
 				Valid: false,
-				Code:  int(amount.Balance),
+				Code:  0,
 			}
 			res, _ := json.Marshal(tx)
 			ctx.GetStub().PutState(txID, res)
 			return
 		}
+		revenue += fee
 
-		balance := user.Assets[assetID]
-		balance.Balance -= totalCost
-		user.Assets[assetID] = balance
+		amount.Balance -= totalCost
+		assetBalance.Balance += usdsn
+
+		user.Assets["USDSN"] = amount
+		user.Assets[assetID] = assetBalance
+
+		tx := Tx{
+			Valid: true,
+			Code:  0,
+		}
+		res, _ := json.Marshal(tx)
+		ctx.GetStub().PutState(txID, res)
 
 		asset.AmountRaised += usdsn
 		bidders := asset.Bidders
