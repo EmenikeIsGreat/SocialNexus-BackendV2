@@ -71,3 +71,13 @@ test('userBid',async ()=>{
         biddersAmount2:100
     })
 })
+
+test('initAsset',async ()=>{
+   
+    expect(
+        res
+    ).toEqual({
+
+    })
+})
+
